@@ -12,6 +12,8 @@ class HomeCoordinator<T: Dependency>: Coordinator<T> {
 
     let navigationViewController: UINavigationController
     private let title = NSLocalizedString("Locations", comment: "Locations")
+    private var locations: [Location] = []
+    private var locationListViewCtrlDelegate: LocationListViewModelUpdateDelegate?
 
     init(dependency: T, navigation: UINavigationController) {
         self.navigationViewController = navigation
@@ -40,13 +42,14 @@ class HomeCoordinator<T: Dependency>: Coordinator<T> {
             navigationViewController.viewControllers = [errorViewController]
             return
         }
-
+        self.locations = locations
         let locationsViewController = LocationsCollectionViewController(
             viewModel: LocationListViewModel(locations),
             layout: UICollectionViewFlowLayout()
         )
         locationsViewController.title = title
         locationsViewController.delegate = self
+        locationListViewCtrlDelegate = locationsViewController
         navigationViewController.viewControllers = [locationsViewController]
     }
 }
@@ -54,10 +57,14 @@ class HomeCoordinator<T: Dependency>: Coordinator<T> {
 extension HomeCoordinator: LocationCollectionViewDelegate {
 
     func didSelectLocation(_ location: Location) {
-        debugPrint("\(self) didSelectLocation")
         guard let url =  NSURL(string: "wikipedia://places?lat=\(location.lat)&lon=\(location.lon)") else {
            return
         }
         UIApplication.shared.open(url as URL, options: [:], completionHandler: nil)
+    }
+    
+    func didAddLocation(_ location: Location) {
+        locations.append(location)
+        locationListViewCtrlDelegate?.didModelUpdated(LocationListViewModel(locations))
     }
 }
