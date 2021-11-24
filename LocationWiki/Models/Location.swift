@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Location: Decodable {
+struct Location: Codable {
     
     let name: String?
     let lat: Decimal

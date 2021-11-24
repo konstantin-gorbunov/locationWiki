@@ -38,7 +38,7 @@ class HomeCoordinatorTests: XCTestCase {
 
     func testLoadingScreen() {
         let expectation = self.expectation(description: "Data Fetched")
-        let location = Location(lat: "52.0716335", lon: "4.2398289")
+        let location = Location(name: nil, lat: Decimal(string: "52.0716335") ?? 0, lon: Decimal(string: "4.2398289") ?? 0)
         if let mock = (dependency?.dataProvider as? MockDataProvider) {
             mock.onFetch = { completion in
                 completion(.success([location]))

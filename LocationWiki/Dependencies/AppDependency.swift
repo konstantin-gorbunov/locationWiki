@@ -11,5 +11,5 @@ protocol Dependency {
 
 class AppDependency: Dependency {
 
-    let dataProvider: DataProvider = LocalJSONLocationsDataProvider()
+    let dataProvider: DataProvider = LiveLocationsDataProvider()
 }

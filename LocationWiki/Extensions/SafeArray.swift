@@ -1,5 +1,5 @@
 //
-//  ArrayExtension.swift
+//  SafeArray.swift
 //  LocationWiki
 //
 //  Created by Kostiantyn Gorbunov on 24/11/2021.
