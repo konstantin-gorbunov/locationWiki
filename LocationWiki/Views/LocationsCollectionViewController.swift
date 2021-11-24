@@ -53,33 +53,17 @@ class LocationsCollectionViewController: BaseCollectionViewController {
     
     @objc private func addLocation(sender: LocationsCollectionViewController) {
         debugPrint("addLocation \(sender)")
-        alertWithTwoTextFields()
+        alertWithThreeTextFields()
     }
     
-    private func alertWithTwoTextFields() {
+    private func alertWithThreeTextFields() {
         let titleMsg = NSLocalizedString("New Location", comment: "New Location title")
         let secondLineMsg = NSLocalizedString("The latitude must be a number between -90 and 90 and the longitude between -180 and 180", comment: "Explanation for new location")
         let saveBtnTitle = NSLocalizedString("Save", comment: "Save button")
         
         let alert = UIAlertController(title: titleMsg, message: secondLineMsg, preferredStyle: UIAlertController.Style.alert )
         let save = UIAlertAction(title: saveBtnTitle, style: .default) { [weak self] _ in
-            guard let textFields = alert.textFields,
-                let latitudeText = textFields.first?.text
-                else { return }
-            if latitudeText.count == 0 {
-                debugPrint("latitude is empty")
-                return
-            }
-            if textFields.count < 2 {
-                return
-            }
-            guard let longitudeText = textFields[1].text else { return }
-            if longitudeText.count == 0 {
-                debugPrint("longitude is empty")
-                return
-            }
-            let location = Location(lat: latitudeText, lon: longitudeText)
-            self?.delegate?.didAddLocation(location)
+            self?.addLocation(alert)
         }
         alert.addTextField { textField in
             textField.placeholder = NSLocalizedString("Enter latitude", comment: "Enter latitude placeholder")
@@ -87,9 +71,31 @@ class LocationsCollectionViewController: BaseCollectionViewController {
         alert.addTextField { textField in
             textField.placeholder = NSLocalizedString("Enter longitude", comment: "Enter longitude placeholder")
         }
+        alert.addTextField { textField in
+            textField.placeholder = NSLocalizedString("Enter the name", comment: "Enter the name of location placeholder")
+        }
         alert.addAction(save)
         alert.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "Cancel button"), style: .default) { _ in })
         present(alert, animated:true, completion: nil)
+    }
+    
+    private func addLocation(_ alert: UIAlertController) {
+        guard let textFields = alert.textFields,
+            let latitudeText = textFields.first?.text
+            else { return }
+        if latitudeText.count == 0 {
+            debugPrint("latitude is empty")
+            return
+        }
+        guard let longitudeText = textFields[safeIndex: 1]?.text else { return }
+        if longitudeText.count == 0 {
+            debugPrint("longitude is empty")
+            return
+        }
+        let location = Location(name: textFields[safeIndex: 2]?.text,
+                                lat: Decimal(string: latitudeText) ?? 0,
+                                lon: Decimal(string: longitudeText) ?? 0)
+        delegate?.didAddLocation(location)
     }
 }
 

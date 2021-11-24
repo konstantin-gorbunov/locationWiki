@@ -14,14 +14,16 @@ class LocationViewCell: UICollectionViewCell, NibInstantiatable {
             borderedView?.borderColor = UIColor.darkGray.cgColor
         }
     }
-    @IBOutlet private weak var locationNameLabel: UILabel?
+    @IBOutlet private weak var nameLabel: UILabel?
+    @IBOutlet private weak var locationLabel: UILabel?
 
     var viewModel: LocationViewModel? {
         didSet {
             guard let viewModel = viewModel else {
                 return
             }
-            locationNameLabel?.text = viewModel.name
+            nameLabel?.text = viewModel.name
+            locationLabel?.text = viewModel.coordinate
             borderedView?.borderSides = viewModel.borderSides
         }
     }

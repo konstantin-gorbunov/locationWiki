@@ -11,16 +11,18 @@ struct LocationViewModel {
     let location: Location?
     let borderSides: BorderLayer.Side
     let name: String
+    let coordinate: String
     
     init(_ location: Location?, borderSides: BorderLayer.Side) {
         self.location = location
         self.borderSides = borderSides
         if let location = location {
-            name = "Lat: \(location.lat) Long: \(location.lon)"
+            coordinate = "Lat: \(location.lat) Long: \(location.lon)"
         }
         else {
-            name = ""
+            coordinate = ""
         }
+        name = location?.name ?? "No name"
     }
 }
 

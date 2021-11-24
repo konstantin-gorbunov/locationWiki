@@ -9,11 +9,13 @@ import Foundation
 
 struct Location: Decodable {
     
-    let lat: String
-    let lon: String
+    let name: String?
+    let lat: Decimal
+    let lon: Decimal
         
     enum CodingKeys: String, CodingKey {
-        case lat = "\"lat\""
-        case lon = "\"lon\""
+        case name = "name"
+        case lat = "lat"
+        case lon = "long"
     }
 }
