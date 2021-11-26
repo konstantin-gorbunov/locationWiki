@@ -1,0 +1,40 @@
+We reviewed your assignment and the functionality of both apps are working and doing what was asked. The code in general is readable and not overcomplicated. However, the level that we expect for a Chapter Lead position was not met unfortunately. Here are a few observations that caught our attention:
+
+Architecture
+
+·        MVC works for this small app, but won’t be maintainable on a big project, hence clustering by type is not a scalable solution for instance we’ve noticed this on the Views, Coordinators, models, dependencies folders;
+
+·        Having a shared AppDependency across AppCoordinator to HomeCoordinator is not a good practice because why does AppCoordinator needs to know about dependencies that are meant for HomeCoordinator only? The same applies for AppCoordinator.
+
+Bugs
+
+·        A location can be added by typing a character in latitude an longitude and it is added as latitude 0 and longitude 0, the keyboard could have been limited to numbers only for instance;
+
+·        A location with latitude ranges +90 and -90 can be added which exceeds the ranges of the latitude;
+
+·        A location with longitude ranges +180 and -180 can be added which exceeds the ranges of the longitude;
+
+·        Adding a large longitude and large latitude will go beyond the margins of the phone.
+
+Testing
+Although we’ve noticed dependency injection and a bit of testing we are missing:
+
+·        Testing on ViewControllers;
+
+·        Testing on Business logic;
+
+·        Testing on the Coordinators is only checking if a viewController is visible.
+
+Violation to Single responsibility principle
+
+·        In Home Coordinator we’ve noticed that a fetch of the locationList which shouldn’t be the coordinators responsibility.
+
+Miscellaneous
+
+·        LocalizedStrings are hardcoded in each of the files;
+
+·        DebugPrints are in the code;
+
+·        Inheritance over composition by creating a BaseCollectionViewController and having LocationsCollectionViewController inherit from it;
+
+·        LocationListViewModelUpdateDelegate should have been called Protocol or Controllable but not delegate.
